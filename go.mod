@@ -6,6 +6,7 @@ require (
 	github.com/bytedance/sonic v1.11.9
 	github.com/hashicorp/golang-lru v1.0.2
 	github.com/redis/go-redis/v9 v9.5.3
+	github.com/syndtr/goleveldb v1.0.0
 )
 
 require (
@@ -14,6 +15,7 @@ require (
 	github.com/cloudwego/base64x v0.1.4 // indirect
 	github.com/cloudwego/iasm v0.2.0 // indirect
 	github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f // indirect
+	github.com/golang/snappy v0.0.0-20180518054509-2e65f85255db // indirect
 	github.com/klauspost/cpuid/v2 v2.0.9 // indirect
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
 	golang.org/x/arch v0.0.0-20210923205945-b76863e36670 // indirect

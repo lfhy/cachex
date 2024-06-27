@@ -7,6 +7,23 @@
 # 写入
 数据会先写入持久化存储再自动存储至内存缓存中
 
+# 支持的缓存类型
+
+## 内存存储
+### Lru算法
+Lru是一种内存数据淘汰策略，最近最少被使用的数据最先被淘汰。使用```cachex.NewMemLruCacheStroage```创建Lru内存缓存存储。
+
+### Lfu算法
+Lfu是一种内存数据淘汰策略，使用频率最低的数据最先被淘汰。使用```cachex.NewMemLfuCacheStroage```创建Lru内存缓存存储。
+
+## 持久化存储
+### Redis
+使用Redis进行存储，使用```cachex.NewRedisCacheStroage```创建Redis缓存存储。
+
+### LevelDB
+使用LevelDB进行存储，使用```cachex.NewLevelDBCacheStroage```创建Redis缓存存储。
+
+
 # 使用方法
 见`example`包
 ```golang

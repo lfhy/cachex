@@ -6,10 +6,12 @@ type LruCache[T any] struct {
 	cache *lru.Cache
 }
 
+// Lru最近最少被使用的数据最先被淘汰
 func NewMemLruCacheStroage(cacheSize int) *LruCache[any] {
 	return NewMemLruCacheStroageWithType[any](cacheSize)
 }
 
+// Lru最近最少被使用的数据最先被淘汰
 func NewMemLruCacheStroageWithType[T any](cacheSize int) *LruCache[T] {
 	if cacheSize <= 0 {
 		cacheSize = 1000000
