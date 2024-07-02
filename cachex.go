@@ -6,17 +6,17 @@ type Cache[T any] struct {
 }
 
 // 默认创any类型的存储
-func NewCache(memcache CacheStroage[any], remotecache ...CacheStroage[any]) *Cache[any] {
+func NewCache(defaultcache CacheStroage[any], remotecache ...CacheStroage[any]) *Cache[any] {
 	return &Cache[any]{
-		memcache:    memcache,
+		memcache:    defaultcache,
 		remotecache: remotecache,
 	}
 }
 
 // 带有类型的存储
-func NewCacheWithType[T any](memcache CacheStroage[T], remotecache ...CacheStroage[T]) *Cache[T] {
+func NewCacheWithType[T any](defaultcache CacheStroage[T], remotecache ...CacheStroage[T]) *Cache[T] {
 	return &Cache[T]{
-		memcache:    memcache,
+		memcache:    defaultcache,
 		remotecache: remotecache,
 	}
 }
@@ -43,6 +43,27 @@ func (c *Cache[T]) Set(key string, value T) {
 	for _, remote := range c.remotecache {
 		remote.Set(key, value)
 	}
+}
+
+// 通过函数取值 取值后设置缓存
+func (c *Cache[T]) SetFunc(key string, fn func() (value T, canSet bool)) {
+	data, ok := fn()
+	if ok {
+		c.memcache.Set(key, data)
+		for _, remote := range c.remotecache {
+			remote.Set(key, data)
+		}
+	}
+}
+
+// 设置缓存别名
+func (c *Cache[T]) Save(key string, value T) {
+	c.Set(key, value)
+}
+
+// 设置缓存别名
+func (c *Cache[T]) Create(key string, value T) {
+	c.Set(key, value)
 }
 
 // 删除缓存
@@ -72,7 +93,7 @@ func (c *Cache[T]) GetOrSetFunc(key string, setFn func() (value T, canSet bool))
 	value, ok := setFn()
 	if ok {
 		c.Set(key, value)
-		return value, false
+		return value, true
 	}
 	return oldValue, false
 }

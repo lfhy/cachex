@@ -7,16 +7,17 @@ type LruCache[T any] struct {
 }
 
 // Lru最近最少被使用的数据最先被淘汰
-func NewMemLruCacheStroage(cacheSize int) *LruCache[any] {
-	return NewMemLruCacheStroageWithType[any](cacheSize)
+func NewMemLruCacheStroage(cacheSize ...int) *LruCache[any] {
+	return NewMemLruCacheStroageWithType[any](cacheSize...)
 }
 
 // Lru最近最少被使用的数据最先被淘汰
-func NewMemLruCacheStroageWithType[T any](cacheSize int) *LruCache[T] {
-	if cacheSize <= 0 {
-		cacheSize = 1000000
+func NewMemLruCacheStroageWithType[T any](cacheSize ...int) *LruCache[T] {
+	cache := 1000000
+	if len(cacheSize) > 0 && cacheSize[0] > 0 {
+		cache = cacheSize[0]
 	}
-	lrucache, _ := lru.New(cacheSize)
+	lrucache, _ := lru.New(cache)
 	return &LruCache[T]{
 		cache: lrucache,
 	}

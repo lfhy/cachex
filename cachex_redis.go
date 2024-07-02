@@ -23,7 +23,7 @@ func NewRedisCacheStroage(config *RedisConfig, timeout ...time.Duration) *RedisC
 
 // Redis存储
 // 传入连接参数和缓存超时时间
-func NewRedisCacheStroageWithType[T any](config *redis.Options, timeout ...time.Duration) *RedisCache[T] {
+func NewRedisCacheStroageWithType[T any](config *RedisConfig, timeout ...time.Duration) *RedisCache[T] {
 	t := time.Duration(0)
 	if len(timeout) > 0 {
 		t = timeout[0]
