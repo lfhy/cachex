@@ -61,3 +61,8 @@ func (c *RedisCache[T]) Delete(key string) {
 func (c *RedisCache[T]) Free() {
 	c.rdb.FlushDB(context.Background()).Err()
 }
+
+// 获取DB实例对象
+func (c *RedisCache[T]) GetDBInterface() *redis.Client {
+	return c.rdb
+}

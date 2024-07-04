@@ -16,8 +16,11 @@ func NewMemFifoCacheStroageWithType[T any](cacheSize ...int) *FifoCache[T] {
 	if len(cacheSize) > 0 && cacheSize[0] > 0 {
 		cache = cacheSize[0]
 	}
+	var data SliceMap[T]
+	data.data = make([]*Data[T], 0)
 	return &FifoCache[T]{
-		size: cache,
+		size:  cache,
+		cache: &data,
 	}
 }
 

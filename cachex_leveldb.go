@@ -65,3 +65,8 @@ func (c *LeveldbCache[T]) Free() {
 		iter.Release()
 	}
 }
+
+// 获取DB实例对象
+func (c *LeveldbCache[T]) GetDBInterface() *leveldb.DB {
+	return c.cache
+}
