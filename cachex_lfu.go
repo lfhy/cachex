@@ -6,6 +6,7 @@ import (
 )
 
 type LfuCache[T any] struct {
+	noCloseStroage
 	UpperBound      int
 	LowerBound      int
 	values          map[string]*cacheEntry[T]

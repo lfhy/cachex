@@ -1,6 +1,7 @@
 package cachex
 
 type SliceMap[T any] struct {
+	noCloseStroage
 	data []*Data[T]
 }
 

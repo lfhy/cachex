@@ -70,3 +70,8 @@ func (c *LeveldbCache[T]) Free() {
 func (c *LeveldbCache[T]) GetDBInterface() *leveldb.DB {
 	return c.cache
 }
+
+// 获取DB实例对象
+func (c *LeveldbCache[T]) Close() {
+	c.cache.Close()
+}

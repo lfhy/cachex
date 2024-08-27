@@ -3,6 +3,7 @@ package cachex
 import lru "github.com/hashicorp/golang-lru"
 
 type LruCache[T any] struct {
+	noCloseStroage
 	cache *lru.Cache
 }
 

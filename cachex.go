@@ -112,3 +112,11 @@ func (c *Cache[T]) Free() {
 		remote.Free()
 	}
 }
+
+// 关闭缓存
+func (c *Cache[T]) Close() {
+	c.memcache.Close()
+	for _, remote := range c.remotecache {
+		remote.Close()
+	}
+}

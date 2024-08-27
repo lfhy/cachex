@@ -1,6 +1,7 @@
 package cachex
 
 type FifoCache[T any] struct {
+	noCloseStroage
 	cache *SliceMap[T]
 	size  int
 }

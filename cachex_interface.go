@@ -9,7 +9,13 @@ type CacheStroage[T any] interface {
 	Delete(key string)
 	// 清空缓存
 	Free()
+	// 关闭
+	Close()
 }
+
+type noCloseStroage struct{}
+
+func (noCloseStroage) Close() {}
 
 type JsonByteData[T any] struct {
 	Data T `json:"Data"`

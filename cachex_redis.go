@@ -66,3 +66,7 @@ func (c *RedisCache[T]) Free() {
 func (c *RedisCache[T]) GetDBInterface() *redis.Client {
 	return c.rdb
 }
+
+func (c *RedisCache[T]) Close() {
+	c.rdb.Close()
+}
