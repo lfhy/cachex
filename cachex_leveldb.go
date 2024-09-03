@@ -3,7 +3,6 @@ package cachex
 import (
 	"strings"
 
-	"github.com/bytedance/sonic"
 	leveldb "github.com/syndtr/goleveldb/leveldb"
 	"github.com/syndtr/goleveldb/leveldb/opt"
 	"github.com/syndtr/goleveldb/leveldb/util"
@@ -42,14 +41,14 @@ func (c *LeveldbCache[T]) Get(key string) (T, bool) {
 	if err != nil {
 		return getData.Data, false
 	}
-	return getData.Data, sonic.Unmarshal(data, &getData) == nil
+	return getData.Data, unmarshal(data, &getData)
 }
 
 // 设置缓存
 func (c *LeveldbCache[T]) Set(key string, value T) {
 	var setData JsonByteData[T]
 	setData.Data = value
-	data, _ := sonic.Marshal(setData)
+	data := marshal(setData)
 	c.cache.Put([]byte(key), data, &opt.WriteOptions{})
 }
 

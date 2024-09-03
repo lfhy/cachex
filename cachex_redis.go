@@ -4,7 +4,6 @@ import (
 	"context"
 	"time"
 
-	"github.com/bytedance/sonic"
 	"github.com/redis/go-redis/v9"
 )
 
@@ -41,14 +40,14 @@ func (c *RedisCache[T]) Get(key string) (T, bool) {
 	if err != nil {
 		return getData.Data, false
 	}
-	return getData.Data, sonic.UnmarshalString(data, &getData) == nil
+	return getData.Data, unmarshalString(data, &getData)
 }
 
 // 设置缓存
 func (c *RedisCache[T]) Set(key string, value T) {
 	var setData JsonByteData[T]
 	setData.Data = value
-	data, _ := sonic.MarshalString(setData)
+	data := marshalString(setData)
 	c.rdb.Set(context.Background(), key, data, c.timeout).Err()
 }
 
