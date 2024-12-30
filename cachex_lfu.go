@@ -6,7 +6,6 @@ import (
 )
 
 type LfuCache[T any] struct {
-	noCloseStroage
 	UpperBound      int
 	LowerBound      int
 	values          map[string]*cacheEntry[T]
@@ -99,6 +98,11 @@ func (c *LfuCache[T]) Free() {
 	c.evict(c.len)
 }
 
+// 关闭缓存
+func (c *LfuCache[T]) Close() {
+	c.Free()
+}
+
 func (c *LfuCache[T]) evict(count int) int {
 	// No lock here so it can be called
 	// from within the lock (during Set)
@@ -163,5 +167,17 @@ func (c *LfuCache[T]) remEntry(place *list.Element, entry *cacheEntry[T]) {
 	delete(entries, entry)
 	if len(entries) == 0 {
 		c.freqs.Remove(place)
+	}
+}
+
+// 遍历数据
+func (c *LfuCache[T]) Range(f func(key string, value T) bool) {
+	c.lock.RLock()
+	defer c.lock.RUnlock()
+	for key, e := range c.values {
+		c.increment(e)
+		if !f(key, e.value) {
+			break
+		}
 	}
 }

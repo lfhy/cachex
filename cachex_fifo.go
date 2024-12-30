@@ -55,3 +55,8 @@ func (c *FifoCache[T]) Free() {
 	}
 	c.cache = &cache
 }
+
+// 遍历缓存
+func (c *FifoCache[T]) Range(f func(key string, value T) bool) {
+	c.cache.Range(f)
+}

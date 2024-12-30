@@ -48,3 +48,15 @@ func (c *LruCache[T]) Delete(key string) {
 func (c *LruCache[T]) Free() {
 	c.cache.Purge()
 }
+
+// 遍历数据
+func (c *LruCache[T]) Range(f func(key string, value T) bool) {
+	for _, key := range c.cache.Keys() {
+		value, ok := c.cache.Get(key)
+		if ok {
+			if !f(key.(string), value.(T)) {
+				break
+			}
+		}
+	}
+}

@@ -11,6 +11,8 @@ type CacheStroage[T any] interface {
 	Free()
 	// 关闭
 	Close()
+	// 遍历
+	Range(fn func(key string, value T) (Continue bool))
 }
 
 type noCloseStroage struct{}

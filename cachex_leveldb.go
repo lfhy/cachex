@@ -31,7 +31,7 @@ func NewLevelDBCacheStroageWithType[T any](dbpath string) (*LeveldbCache[T], err
 	}
 	return &LeveldbCache[T]{
 		cache: db,
-	}, nil
+	}, err
 }
 
 // 获取缓存
@@ -57,6 +57,12 @@ func (c *LeveldbCache[T]) Delete(key string) {
 	c.cache.Delete([]byte(key), &opt.WriteOptions{})
 }
 
+// 反序化数据
+func (c *LeveldbCache[T]) Unmarshal(data []byte) (T, bool) {
+	var getData JsonByteData[T]
+	return getData.Data, unmarshal(data, &getData)
+}
+
 // 清空缓存
 func (c *LeveldbCache[T]) Free() {
 	iter := c.cache.NewIterator(&util.Range{}, &opt.ReadOptions{})
@@ -73,4 +79,18 @@ func (c *LeveldbCache[T]) GetDBInterface() *leveldb.DB {
 // 获取DB实例对象
 func (c *LeveldbCache[T]) Close() {
 	c.cache.Close()
+}
+
+// 遍历数据
+func (c *LeveldbCache[T]) Range(f func(key string, value T) bool) {
+	iter := c.cache.NewIterator(&util.Range{}, &opt.ReadOptions{})
+	for iter.Next() {
+		key := string(iter.Key())
+		data, ok := c.Unmarshal(iter.Value())
+		if ok {
+			if !f(key, data) {
+				break
+			}
+		}
+	}
 }

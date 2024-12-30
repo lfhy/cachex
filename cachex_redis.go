@@ -69,3 +69,20 @@ func (c *RedisCache[T]) GetDBInterface() *redis.Client {
 func (c *RedisCache[T]) Close() {
 	c.rdb.Close()
 }
+
+// 遍历数据
+func (c *RedisCache[T]) Range(f func(key string, value T) bool) {
+	ctx := context.Background()
+	data, err := c.rdb.Keys(ctx, "*").Result()
+	if err != nil {
+		return
+	}
+	for _, key := range data {
+		value, ok := c.Get(key)
+		if ok {
+			if !f(key, value) {
+				return
+			}
+		}
+	}
+}
