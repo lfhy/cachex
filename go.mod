@@ -5,7 +5,7 @@ go 1.19
 require (
 	github.com/bytedance/sonic v1.12.5
 	github.com/glebarez/sqlite v1.11.0
-	github.com/hashicorp/golang-lru v1.0.2
+	github.com/karlseguin/ccache/v3 v3.0.6
 	github.com/redis/go-redis/v9 v9.5.3
 	github.com/syndtr/goleveldb v1.0.0
 	gorm.io/gorm v1.25.12
